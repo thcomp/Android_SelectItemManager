@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jp.co.thcomp.android_selectitemmanager.MasterData;
-
 public class SelectItemManager {
+    private enum SelectStatus{
+        Select,
+        UnSelect;
+    }
+
     public interface MasterDataItem{
         public String getGroupId();
         public String getItemId();
@@ -24,9 +27,8 @@ public class SelectItemManager {
     }
 
     private MasterDataItemProvider mMasterDataItemProvider;
-    private HashMap<String, HashMap<String, MasterDataItem>> mSelectItemMap = new HashMap<String, HashMap<String, MasterDataItem>>();
-    private HashMap<String, HashMap<String, MasterDataItem>> mUnSelectItemMap = new HashMap<String, HashMap<String, MasterDataItem>>();
-    private HashMap<String, HashMap<String, MasterDataItem>> mTargetItemMap = mSelectItemMap;
+    private SelectStatus mSelectStatus = SelectStatus.Select;
+    private HashMap<String, HashMap<String, MasterDataItem>> mTargetItemMap = new HashMap<String, HashMap<String, MasterDataItem>>();
 
     public SelectItemManager(MasterDataItemProvider provider){
         if(provider == null){
@@ -37,7 +39,7 @@ public class SelectItemManager {
     }
 
     public synchronized void selectItem(String groupId, String itemId){
-        if (mTargetItemMap == mSelectItemMap) {
+        if (mSelectStatus == SelectStatus.Select) {
             HashMap<String, MasterDataItem> targetGroupMap = mTargetItemMap.get(groupId);
 
             if(targetGroupMap == null){
@@ -46,7 +48,7 @@ public class SelectItemManager {
             }
 
             targetGroupMap.put(itemId, mMasterDataItemProvider.getMasterDataItem(groupId, itemId));
-        } else {
+        } else if (mSelectStatus == SelectStatus.UnSelect) {
             // 非選択になるので、削除
             HashMap<String, MasterDataItem> targetGroupMap = mTargetItemMap.get(groupId);
             if(targetGroupMap != null) {
@@ -56,12 +58,12 @@ public class SelectItemManager {
     }
 
     public synchronized void unselectItem(String groupId, String itemId){
-        if (mTargetItemMap == mSelectItemMap) {
+        if (mSelectStatus == SelectStatus.Select) {
             HashMap<String, MasterDataItem> targetGroupMap = mTargetItemMap.get(groupId);
             if(targetGroupMap != null) {
                 targetGroupMap.remove(itemId);
             }
-        } else {
+        } else if (mSelectStatus == SelectStatus.UnSelect) {
             // 非選択になるので、追加
             HashMap<String, MasterDataItem> targetGroupMap = mTargetItemMap.get(groupId);
             if(targetGroupMap == null) {
@@ -74,30 +76,28 @@ public class SelectItemManager {
     }
 
     public synchronized void selectAllItem(){
-        mSelectItemMap.clear();
-        mUnSelectItemMap.clear();
+        mTargetItemMap.clear();
 
         // 全選択されたので、これからは選択されていないアイテムを管理していく
-        mTargetItemMap = mUnSelectItemMap;
+        mSelectStatus = SelectStatus.UnSelect;
     }
 
     public synchronized void unselectAllItem(){
-        mSelectItemMap.clear();
-        mUnSelectItemMap.clear();
+        mTargetItemMap.clear();
 
         // 全選択されたので、これからは選択されているアイテムを管理していく
-        mTargetItemMap = mSelectItemMap;
+        mSelectStatus = SelectStatus.Select;
     }
 
     public synchronized boolean isSelected(String groupId, String itemId){
         boolean ret = false;
 
-        if(mTargetItemMap == mSelectItemMap){
+        if (mSelectStatus == SelectStatus.Select) {
             HashMap<String, MasterDataItem> itemMap = mTargetItemMap.get(groupId);
             if(itemMap != null && itemMap.size() > 0){
                 ret = itemMap.containsKey(itemId);
             }
-        }else{
+        } else if (mSelectStatus == SelectStatus.UnSelect) {
             HashMap<String, MasterDataItem> itemMap = mTargetItemMap.get(groupId);
             if(itemMap != null && itemMap.size() > 0){
                 // 非選択アイテムとして管理されている場合は選択されていないことになるので、containsの逆を返却
@@ -114,7 +114,7 @@ public class SelectItemManager {
     public synchronized List<MasterDataItem> getAllSelectItem(){
         ArrayList<MasterDataItem> selectItemList = new ArrayList<MasterDataItem>();
 
-        if(mTargetItemMap == mSelectItemMap){
+        if (mSelectStatus == SelectStatus.Select) {
             // mTargetItemMapに設定されているものをそのまま返却
             Set<Map.Entry<String, HashMap<String, MasterDataItem>>> itemMapEntrySet = mTargetItemMap.entrySet();
             Iterator<Map.Entry<String, HashMap<String, MasterDataItem>>> itemMapIterator = itemMapEntrySet.iterator();
@@ -130,7 +130,7 @@ public class SelectItemManager {
                     }
                 }
             }
-        }else{
+        } else if (mSelectStatus == SelectStatus.UnSelect) {
             // mTargetItemMapに設定されていないものを返却
             for(int groupIndex=0, groupCount=mMasterDataItemProvider.getGroupCount(); groupIndex<groupCount; groupIndex++){
                 for(int itemIndex=0, itemCount=mMasterDataItemProvider.getGroupItemCount(groupIndex); itemIndex<itemCount; itemIndex++){
