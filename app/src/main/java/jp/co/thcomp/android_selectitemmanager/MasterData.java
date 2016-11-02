@@ -6,13 +6,13 @@ import jp.co.thcomp.manager.SelectItemManager;
  * Created by H_Tatsuguchi on 2016/11/01.
  */
 
-public class MasterData implements SelectItemManager.MasterDataItemProvider{
-    public static class SubMasterData implements SelectItemManager.MasterDataItem{
+public class MasterData implements SelectItemManager.MasterDataItemProvider {
+    public static class SubMasterData implements SelectItemManager.MasterDataItem {
         private int mGroupId;
         private int mItemId;
         private String mContent;
 
-        public SubMasterData(int groupId, int itemId, String content){
+        public SubMasterData(int groupId, int itemId, String content) {
             mGroupId = groupId;
             mItemId = itemId;
             mContent = content;
@@ -44,7 +44,7 @@ public class MasterData implements SelectItemManager.MasterDataItemProvider{
     @Override
     public int getMasterDataItemCount() {
         int ret = 0;
-        for(int i=0, size=sMasterDataArray.length; i<size; i++){
+        for (int i = 0, size = sMasterDataArray.length; i < size; i++) {
             ret += sMasterDataArray[i].length;
         }
         return ret;
@@ -64,9 +64,9 @@ public class MasterData implements SelectItemManager.MasterDataItemProvider{
     public SelectItemManager.MasterDataItem getMasterDataItem(int groupPosition, int itemPosition) {
         SelectItemManager.MasterDataItem ret = null;
 
-        try{
+        try {
             ret = sMasterDataArray[groupPosition][itemPosition];
-        }catch (Exception e){
+        } catch (Exception e) {
             // nullで返却
         }
 
@@ -82,7 +82,7 @@ public class MasterData implements SelectItemManager.MasterDataItemProvider{
             int itemIdInt = Integer.parseInt(itemId);
 
             ret = sMasterDataArray[groupIdInt][itemIdInt];
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             // nullで返却
         }
 

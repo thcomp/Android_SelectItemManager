@@ -85,10 +85,10 @@ public class SelectItemManager {
             MasterDataItem groupFirstItem = mMasterDataItemProvider.getMasterDataItem(i, 0);
 
             if (groupFirstItem != null) {
-                if(groupFirstItem.getGroupId().equals(groupId)){
-                    for(int j=0, sizeJ=mMasterDataItemProvider.getGroupItemCount(i); j<sizeJ; j++){
+                if (groupFirstItem.getGroupId().equals(groupId)) {
+                    for (int j = 0, sizeJ = mMasterDataItemProvider.getGroupItemCount(i); j < sizeJ; j++) {
                         MasterDataItem targetItem = mMasterDataItemProvider.getMasterDataItem(i, j);
-                        if(targetItem != null){
+                        if (targetItem != null) {
                             selectItem(targetItem.getGroupId(), targetItem.getItemId());
                         }
                     }
@@ -103,10 +103,10 @@ public class SelectItemManager {
             MasterDataItem groupFirstItem = mMasterDataItemProvider.getMasterDataItem(i, 0);
 
             if (groupFirstItem != null) {
-                if(groupFirstItem.getGroupId().equals(groupId)){
-                    for(int j=0, sizeJ=mMasterDataItemProvider.getGroupItemCount(i); j<sizeJ; j++){
+                if (groupFirstItem.getGroupId().equals(groupId)) {
+                    for (int j = 0, sizeJ = mMasterDataItemProvider.getGroupItemCount(i); j < sizeJ; j++) {
                         MasterDataItem targetItem = mMasterDataItemProvider.getMasterDataItem(i, j);
-                        if(targetItem != null){
+                        if (targetItem != null) {
                             unselectItem(targetItem.getGroupId(), targetItem.getItemId());
                         }
                     }

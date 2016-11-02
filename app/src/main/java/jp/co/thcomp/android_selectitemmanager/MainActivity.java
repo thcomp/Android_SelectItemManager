@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
         showGroupItem(0);
     }
 
-    private void showGroupList(){
+    private void showGroupList() {
         LinearLayout llGroupList = (LinearLayout) findViewById(R.id.ll_group_list);
         llGroupList.removeAllViews();
 
-        for(int i=0, size=MasterData.sMasterDataArray.length; i<size; i++){
+        for (int i = 0, size = MasterData.sMasterDataArray.length; i < size; i++) {
             TextView tempTextView = new TextView(this);
             tempTextView.setText("group " + i);
             tempTextView.setTag(ViewTagGroupId, i);
@@ -52,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showGroupItem(int groupId){
+    private void showGroupItem(int groupId) {
         LinearLayout llItemList = (LinearLayout) findViewById(R.id.ll_item_list);
         llItemList.removeAllViews();
 
-        for(int i=0, size=MasterData.sMasterDataArray[groupId].length; i<size; i++){
+        for (int i = 0, size = MasterData.sMasterDataArray[groupId].length; i < size; i++) {
             SwitchCompat tempSwitch = new SwitchCompat(this);
             tempSwitch.setText(MasterData.sMasterDataArray[groupId][i].getContent());
             tempSwitch.setTag(ViewTagGroupId, groupId);
@@ -67,15 +67,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showSelectItemList(){
+    private void showSelectItemList() {
         LinearLayout llSelectItemList = (LinearLayout) findViewById(R.id.ll_select_item_list);
         llSelectItemList.removeAllViews();
 
         List<SelectItemManager.MasterDataItem> selectItemList = mSelectItemManager.getAllSelectItem();
-        if(selectItemList != null && selectItemList.size() > 0){
-            for(SelectItemManager.MasterDataItem selectItem : selectItemList){
+        if (selectItemList != null && selectItemList.size() > 0) {
+            for (SelectItemManager.MasterDataItem selectItem : selectItemList) {
                 TextView itemTextView = new TextView(this);
-                itemTextView.setText(((MasterData.SubMasterData)selectItem).getContent());
+                itemTextView.setText(((MasterData.SubMasterData) selectItem).getContent());
                 llSelectItemList.addView(itemTextView);
             }
         }
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
             int groupId = (int) buttonView.getTag(ViewTagGroupId);
             int itemId = (int) buttonView.getTag(ViewTagItemId);
 
-            if(isChecked){
+            if (isChecked) {
                 mSelectItemManager.selectItem(String.valueOf(groupId), String.valueOf(itemId));
-            }else{
+            } else {
                 mSelectItemManager.unselectItem(String.valueOf(groupId), String.valueOf(itemId));
             }
         }
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             int id = v.getId();
 
-            switch (id){
+            switch (id) {
                 case R.id.b_select_group:
                     mSelectItemManager.selectGroup(String.valueOf(mLastGroupId));
                     break;
