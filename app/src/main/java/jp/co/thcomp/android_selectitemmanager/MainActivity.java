@@ -15,6 +15,8 @@ import java.util.List;
 
 import jp.co.thcomp.manager.SelectItemManager;
 
+import static android.support.v7.appcompat.R.styleable.SwitchCompat;
+
 public class MainActivity extends AppCompatActivity {
     private static final int ViewTagGroupId = "ViewTagGroupId".hashCode();
     private static final int ViewTagItemId = "ViewTagItemId".hashCode();
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        findViewById(R.id.b_select_group).setOnClickListener(mClickListener);
+        findViewById(R.id.b_unselect_group).setOnClickListener(mClickListener);
         findViewById(R.id.b_select_all).setOnClickListener(mClickListener);
         findViewById(R.id.b_unselect_all).setOnClickListener(mClickListener);
         findViewById(R.id.b_update_select_item_list).setOnClickListener(mClickListener);
@@ -105,6 +109,12 @@ public class MainActivity extends AppCompatActivity {
             int id = v.getId();
 
             switch (id){
+                case R.id.b_select_group:
+                    mSelectItemManager.selectGroup(String.valueOf(mLastGroupId));
+                    break;
+                case R.id.b_unselect_group:
+                    mSelectItemManager.unselectGroup(String.valueOf(mLastGroupId));
+                    break;
                 case R.id.b_select_all:
                     mSelectItemManager.selectAllItem();
                     showGroupItem(mLastGroupId);

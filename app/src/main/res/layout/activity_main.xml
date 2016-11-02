@@ -34,6 +34,18 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/b_select_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="select group"/>
+
+        <Button
+            android:id="@+id/b_unselect_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="unselect group"/>
+
+        <Button
             android:id="@+id/b_select_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
