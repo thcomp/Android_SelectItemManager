@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         showGroupItem(0);
     }
 
-    private void showGroupList() {
+    protected void showGroupList() {
         LinearLayout llGroupList = (LinearLayout) findViewById(R.id.ll_group_list);
         llGroupList.removeAllViews();
 
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showGroupItem(int groupId) {
+    protected void showGroupItem(int groupId) {
         LinearLayout llItemList = (LinearLayout) findViewById(R.id.ll_item_list);
         llItemList.removeAllViews();
 
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showSelectItemList() {
+    protected void showSelectItemList() {
         LinearLayout llSelectItemList = (LinearLayout) findViewById(R.id.ll_select_item_list);
         llSelectItemList.removeAllViews();
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private CompoundButton.OnCheckedChangeListener mSwitchChangedListener = new CompoundButton.OnCheckedChangeListener() {
+    protected CompoundButton.OnCheckedChangeListener mSwitchChangedListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             int groupId = (int) buttonView.getTag(ViewTagGroupId);
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener mGroupClickListener = new View.OnClickListener() {
+    protected View.OnClickListener mGroupClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             mLastGroupId = (int) v.getTag(ViewTagGroupId);
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private View.OnClickListener mClickListener = new View.OnClickListener() {
+    protected View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             int id = v.getId();
@@ -111,9 +111,11 @@ public class MainActivity extends AppCompatActivity {
             switch (id) {
                 case R.id.b_select_group:
                     mSelectItemManager.selectGroup(String.valueOf(mLastGroupId));
+                    showGroupItem(mLastGroupId);
                     break;
                 case R.id.b_unselect_group:
                     mSelectItemManager.unselectGroup(String.valueOf(mLastGroupId));
+                    showGroupItem(mLastGroupId);
                     break;
                 case R.id.b_select_all:
                     mSelectItemManager.selectAllItem();
